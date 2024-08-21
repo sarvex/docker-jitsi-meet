@@ -564,3 +564,47 @@ config.whiteboard = {
 config.testing = {
     enableAv1Support: {{ $TESTING_AV1_SUPPORT }}
 };
+
+// JaaS support: pre-configure image if JAAS_APP_ID was set.
+{{ if .Env.JAAS_APP_ID -}}
+config.hosts.domain = '8x8.vc';
+config.hosts.muc = 'conference.{{ .Env.JAAS_APP_ID }}.8x8.vc';
+config.hosts.focus = 'focus.8x8.vc';
+
+config.analytics.rtcstatsEnabled = true;
+config.analytics.rtcstatsStoreLogs = true;
+config.analytics.rtcstatsUseLegacy = false;
+config.analytics.rtcstatsEndpoint = 'wss://rtcstats-server-8x8.jitsi.net/';
+config.analytics.rtcstatsPollInterval = 10000;
+config.analytics.rtcstatsSendSdp = true;
+
+config.bosh = 'https://8x8.vc/{{ .Env.JAAS_APP_ID }}/http-bind';
+config.websocket = 'wss://8x8.vc/{{ .Env.JAAS_APP_ID }}/xmpp-websocket';
+config.websocketKeepAliveUrl = 'https://8x8.vc/{{ .Env.JAAS_APP_ID }}/_unlock';
+//config.conferenceRequestUrl = 'https://8x8.vc/{{ .Env.JAAS_APP_ID }}/conference-request/v1';
+
+config.hiddenDomain = 'recorder.8x8.vc';
+config.hiddenFromRecorderFeatureEnabled = true;
+config.enableEmailInStats = true;
+
+config.jaasActuatorUrl = 'https://api-vo.cloudflare.jitsi.net/jaas-actuator';
+config.jaasTokenUrl = 'https://api-vo.jitsi.net/token-mapping';
+config.jaasConferenceCreatorUrl = 'https://api-vo.jitsi.net/vmms-conference-mapper/v1/access/conference-creator';
+config.webhookProxyUrl = 'https://api-vo.jitsi.net/webhook-proxy';
+config.billingCounterUrl = 'https://api-vo.jitsi.net/billing-counter/v1/connection';
+config.brandingDataUrl = 'https://api-vo.cloudflare.jitsi.net/branding/public/v1/conferences';
+config.dialInNumbersUrl = 'https://api-vo.cloudflare.jitsi.net/vmms-conference-mapper/access/v1/dids';
+config.dialInConfCodeUrl = 'https://api-vo.cloudflare.jitsi.net/vmms-conference-mapper/v1/access';
+config.dialOutCodesUrl = 'https://platform.8x8.com/meetingaccess/v1/country/codes';
+config.dialOutAuthUrl = 'https://api-vo.jitsi.net/phone-authorize';
+config.dialOutRegionUrl = 'https://api-vo.jitsi.net/customer-configs/v1/outbound-destination';
+config.peopleSearchUrl = 'https://api-vo.jitsi.net/v1/directory/search';
+config.inviteServiceUrl = 'https://api-vo.jitsi.net/v1/meeting/invite';
+config.recordingSharingUrl = 'https://api-vo.jitsi.net/jaas-recordings/link';
+config.peopleSearchQueryTypes = ['user','conferenceRooms'];
+config.sipInviteUrl = 'https://api-vo.jitsi.net/sip-jibri-gateway/jibris/invite';
+config.jaasFeedbackMetadataURL = 'https://api-vo.jitsi.net/webhook-proxy/feedback';
+
+config.whiteboard.collabServerBaseUrl = 'https://eght-excalidraw-backend.cloudflare.jitsi.net';
+config.whiteboard.userLimit = 25;
+{{ end -}}
