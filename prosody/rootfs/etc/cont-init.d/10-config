@@ -119,6 +119,7 @@ if [[ "$PROSODY_MODE" == "client" ]]; then
     fi
     if [[ "$(echo "$ENABLE_TRANSCRIPTIONS" | tr '[:upper:]' '[:lower:]')" == "true" ]] || [[ "$ENABLE_TRANSCRIPTIONS" == "1" ]]; then
         if [[ ! -z $JIGASI_TRANSCRIBER_PASSWORD ]]; then
+            [ -z "$JIGASI_TRANSCRIBER_USER" ] && JIGASI_TRANSCRIBER_USER="transcriber"
             prosodyctl --config $PROSODY_CFG register $JIGASI_TRANSCRIBER_USER $XMPP_RECORDER_DOMAIN $JIGASI_TRANSCRIBER_PASSWORD
         fi
     fi
